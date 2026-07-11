@@ -322,14 +322,77 @@
 
       <div data-dc-tpl="35" style="padding: 64px 8vw; max-width: 640px; margin: 0px auto; text-align: center;">
         <p data-dc-tpl="36" style="font: 400 17px / 1.7 &quot;Libre Franklin&quot;, sans-serif; color: rgb(58, 46, 40); margin: 0px;">Stuart Stirling, Donna McKenzie, Ian Muir and Andy Hendry — a four-piece from Falkirk writing moody, unpolished pop built for the room, not the algorithm. Formed in late 2025, drawing from Frank Zappa, Mighty Mighty, The Close Lobsters and The Monkees. No socials, no clout-chasing — just rare, deliberate shows and word-of-mouth.</p>
-        <button data-dc-tpl="37" class="navlink" style="margin-top: 16px; text-decoration: underline;">Read more about the band</button>
+        <button data-dc-tpl="37" class="navlink" style="margin-top: 16px; text-decoration: underline;" onclick="goAbout()">Read more about the band</button>
       </div>
     </main>
-  
 
-  
+    <!-- About page -->
+    <main id="about-page" style="display:none; flex:1;">
+      <div style="flex:1; padding:80px 8vw; max-width:720px; margin:0 auto;">
+        <h2 style="font:italic 400 40px 'Instrument Serif',serif; color:#1a1a1a; margin-bottom:28px;">About</h2>
+        <p style="font:400 17px/1.7 'Libre Franklin',sans-serif; color:#3a2e28; margin:0 0 20px;">Stuart Stirling, Donna McKenzie, Ian Muir and Andy Hendry — a four-piece from Falkirk writing moody, unpolished pop built for the room, not the algorithm.</p>
+        <p style="font:400 17px/1.7 'Libre Franklin',sans-serif; color:#3a2e28; margin:0 0 20px;">Formed in late 2025, drawing from Frank Zappa, Mighty Mighty, The Close Lobsters and The Monkees. No socials, no clout-chasing — just rare, deliberate shows and word-of-mouth.</p>
+        <p style="font:400 17px/1.7 'Libre Franklin',sans-serif; color:#3a2e28; margin:0 0 20px;">Their debut recordings were laid down in March 2026 — raw, live-to-room, with a debut EP on the way.</p>
+        <p style="font:400 17px/1.7 'Libre Franklin',sans-serif; color:#3a2e28; margin:0;">"Infectious energy and aching melody — an absolute must-see live." — <em>The Grangemouth Gazette</em></p>
+      </div>
+    </main>
 
-  
+    <!-- Tour page -->
+    <main id="tour-page" style="display:none; flex:1;">
+      <div style="flex:1; padding:80px 8vw; max-width:720px; margin:0 auto;">
+        <h2 style="font:italic 400 40px 'Instrument Serif',serif; color:#1a1a1a; margin-bottom:28px;">Tour</h2>
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; align-items:center; padding:14px 0; border-bottom:1px solid rgba(0,0,0,.08); font:400 15px/1.4 'Libre Franklin',sans-serif; color:#3a2e28;">
+          <div>
+            <div style="font-weight:600;">Sep 5, 2026</div>
+            <div>Fankerton · Miners' Welfare</div>
+          </div>
+          <a href="#" onclick="onSale(event)" style="display:inline-block; background:#1a1a1a; color:#fff; font:600 13px 'Libre Franklin',sans-serif; padding:10px 22px; border-radius:100px; text-decoration:none;">Get tickets</a>
+        </div>
+        <p style="font:400 14px/1.6 'Libre Franklin',sans-serif; color:#8a7a72; margin-top:24px;">More dates to be announced — check back soon.</p>
+      </div>
+    </main>
+
+    <!-- Modal overlay -->
+    <div id="tb-modal" onclick="closeModal()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:999; align-items:center; justify-content:center;">
+      <div onclick="event.stopPropagation()" style="background:#fff; border-radius:12px; padding:32px; max-width:380px; width:90%; text-align:center; font:400 16px/1.6 'Libre Franklin',sans-serif; color:#1a1a1a;">
+        <p id="tb-modal-msg" style="margin:0 0 20px;"></p>
+        <button onclick="closeModal()" style="background:#1a1a1a; color:#fff; border:none; padding:10px 28px; border-radius:100px; font:600 14px 'Libre Franklin',sans-serif; cursor:pointer;">Close</button>
+      </div>
+    </div>
+
+    <script>
+      function showPage(name) {
+        document.querySelector('[data-dc-tpl="13"]').style.display = name === 'home' ? '' : 'none';
+        document.getElementById('about-page').style.display = name === 'about' ? 'flex' : 'none';
+        document.getElementById('tour-page').style.display = name === 'tour' ? 'flex' : 'none';
+        // update nav active states
+        document.querySelector('[data-dc-tpl="8"]').className = 'navlink' + (name === 'home' ? ' active' : '');
+        document.querySelector('[data-dc-tpl="9"]').className = 'navlink' + (name === 'about' ? ' active' : '');
+        document.querySelector('[data-dc-tpl="10"]').className = 'navlink' + (name === 'tour' ? ' active' : '');
+        window.scrollTo(0, 0);
+      }
+      function goHome() { showPage('home'); }
+      function goAbout() { showPage('about'); }
+      function goTour() { showPage('tour'); }
+      function showModal(msg) {
+        document.getElementById('tb-modal-msg').textContent = msg;
+        document.getElementById('tb-modal').style.display = 'flex';
+      }
+      function closeModal() { document.getElementById('tb-modal').style.display = 'none'; }
+      function soldOut(e) { if (e) e.preventDefault(); showModal("Sorry — no tickets left for this show. It’s already been and gone!"); }
+      function onSale(e) { if (e) e.preventDefault(); showModal("Tickets for the Fankerton show go on sale soon — check back!"); }
+      function epComingSoon(e) { if (e) e.preventDefault(); showModal("The debut EP isn’t out yet — recorded in March, coming soon!"); }
+
+      // Wire up nav buttons
+      document.querySelector('[data-dc-tpl="8"]').addEventListener('click', goHome);
+      document.querySelector('[data-dc-tpl="9"]').addEventListener('click', goAbout);
+      document.querySelector('[data-dc-tpl="10"]').addEventListener('click', goTour);
+      // Wire up "See all tour dates" and "Get tickets" on home page
+      document.querySelector('[data-dc-tpl="34"]').addEventListener('click', goTour);
+      document.querySelector('[data-dc-tpl="33"]').addEventListener('click', onSale);
+      // Fix "Listen now" link
+      document.querySelector('[data-dc-tpl="20"]').href = '#listen';
+    </script>
 
   <footer data-dc-tpl="67" style="padding: 32px 8vw; border-top: 1px solid rgba(0, 0, 0, 0.06); display: flex; flex-direction: row; gap: 0px; justify-content: space-between; align-items: center; font: 400 13px &quot;Libre Franklin&quot;, sans-serif; color: rgb(138, 122, 114);">
     <span data-dc-tpl="68">© 2026 Tenbobslider</span>
